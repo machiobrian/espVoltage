@@ -1,0 +1,6 @@
+#define WIFI_SSID "_braen"
+#define WIFI_PASSWORD "1234567890"
+#define INFLUXDB_ORG "83443d057c9291cf"
+#define INFLUXDB_BUCKET "espVoltage"
+#define INFLUXDB_URL "https://us-east-1-1.aws.cloud2.influxdata.com"
+#define INFLUXDB_TOKEN "zOxc5ZTcj3ZyjNkXRDKonyG-ZZwxva4bqzNxGJ5KbXbtsS_haJuPC9w2B9yEjYN_r1iKSTw3OBKZ6l7noq4Yww==" 
