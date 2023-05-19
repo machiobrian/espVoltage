@@ -4,7 +4,8 @@
 #include <InfluxDbClient.h>
 #include <InfluxDbCloud.h>
 
-#define DEVICE 'ESP'
+int deviceNumber = 457;
+String deviceName = String(deviceNumber);
 
 WiFiMulti wifiiMulti;
 
@@ -48,4 +49,38 @@ void setup(){
   sensor.addTag("device", DEVICE);
   sensor.addTag("ssid", WiFi.SSID());
 
+  // sync time with the NTP server
+  timeSync(TZ_INFO, "pool.ntp.org", "time.nis.gov");
+  if (client.validateConnection()){
+    Serial.print("InfluxDB:Connected ");
+    Serial.println(client.getServerUrl());
+  }else{
+    Serial.print("InfluxDB:NoConnection ");
+    Serial.println(client.getLastErrorMessage());
+  }
+}
+
+void loop(){
+  // before elogging data.
+  sensor.clearFields(); //clear all fields of the point instance
+
+  // read the analog input
+  ADCValue = analogRead(AnalogChannelPin);
+  delay(200);
+  voltageValue = (ADCValue*3.3)/(4095);
+  delay(200);
+  sensor.addField("voltage", voltageValue);
+  Serial.println(client.pointToLineProtocol(sensor));
+
+  // incase of WiFi Disconnection
+  if (wifiiMulti.run() != WL_CONNECTED){
+    Serial.println("WiFi Conn Lost");
+  }
+
+  // write the point to the database every 5 seconds
+  if(!client.writePoint(sensor)){
+    Serial.print("InfluxDB write failed: ");
+    Serial.println(client.getLastErrorMessage());
+  }
+  delay(500);
 }

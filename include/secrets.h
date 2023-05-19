@@ -4,3 +4,4 @@
 #define INFLUXDB_BUCKET "espVoltage"
 #define INFLUXDB_URL "https://us-east-1-1.aws.cloud2.influxdata.com"
 #define INFLUXDB_TOKEN "zOxc5ZTcj3ZyjNkXRDKonyG-ZZwxva4bqzNxGJ5KbXbtsS_haJuPC9w2B9yEjYN_r1iKSTw3OBKZ6l7noq4Yww==" 
+#define DEVICE "ESP"
