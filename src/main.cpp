@@ -4,10 +4,7 @@
 #include <InfluxDbClient.h>
 #include <InfluxDbCloud.h>
 
-int deviceNumber = 457;
-String deviceName = String(deviceNumber);
-
-WiFiMulti wifiiMulti;
+WiFiMulti wifiMulti;
 
 // set timezone string UTC
 #define TZ_INFO "EAT-3" //nairobi
@@ -26,20 +23,20 @@ InfluxDBClient client(
 Point sensor("voltageStatus"); // measurement, tagSet, fieldKey, field_Value, timeStamp
 
 // pin definition
-const int AnalogChannelPin = 15;
+const int AnalogChannelPin = 32;
 int ADCValue = 0; // stores ADC value
 float voltageValue; // stores the voltage value
 
 void setup(){
   Serial.begin(115200);
   WiFi.mode(WIFI_STA); // set esp32 in station modes
-  wifiiMulti.addAP(
+  wifiMulti.addAP(
     WIFI_SSID,
     WIFI_PASSWORD
   );
   // make use of the "run" method to connect ESP32 to WiFi.
   Serial.print("Connecting to WiFi ...");
-  while (wifiiMulti.run() != WL_CONNECTED){
+  while (wifiMulti.run() != WL_CONNECTED){
     Serial.print(".");
     delay(1000);
   }
@@ -73,7 +70,7 @@ void loop(){
   Serial.println(client.pointToLineProtocol(sensor));
 
   // incase of WiFi Disconnection
-  if (wifiiMulti.run() != WL_CONNECTED){
+  if (wifiMulti.run() != WL_CONNECTED){
     Serial.println("WiFi Conn Lost");
   }
 
