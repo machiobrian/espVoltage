@@ -11,13 +11,7 @@ WiFiMulti wifiMulti;
 
 // create an influxDB client instance, it will generate a secure client with 
 // preconfigured certificate
-InfluxDBClient client(
-  INFLUXDB_URL,
-  INFLUXDB_TOKEN,
-  INFLUXDB_ORG,
-  INFLUXDB_BUCKET,
-  InfluxDbCloud2CACert
-);
+InfluxDBClient client(INFLUXDB_URL, INFLUXDB_ORG, INFLUXDB_BUCKET, INFLUXDB_TOKEN, InfluxDbCloud2CACert);
 
 // create a datapoint (voltage_status)
 Point sensor("voltageStatus"); // measurement, tagSet, fieldKey, field_Value, timeStamp
@@ -38,7 +32,7 @@ void setup(){
   Serial.print("Connecting to WiFi ...");
   while (wifiMulti.run() != WL_CONNECTED){
     Serial.print(".");
-    delay(1000);
+    delay(500);
   }
   Serial.println();
 
@@ -59,13 +53,13 @@ void setup(){
 
 void loop(){
   // before elogging data.
-  sensor.clearFields(); //clear all fields of the point instance
+  // sensor.clearFields(); //clear all fields of the point instance
 
   // read the analog input
   ADCValue = analogRead(AnalogChannelPin);
-  delay(200);
+  delay(1);
   voltageValue = (ADCValue*3.3)/(4095);
-  delay(200);
+  delay(1);
   sensor.addField("voltage", voltageValue);
   Serial.println(client.pointToLineProtocol(sensor));
 
@@ -79,5 +73,5 @@ void loop(){
     Serial.print("InfluxDB write failed: ");
     Serial.println(client.getLastErrorMessage());
   }
-  delay(500);
+  delay(2);
 }
